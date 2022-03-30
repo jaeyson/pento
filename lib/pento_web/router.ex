@@ -1,6 +1,8 @@
 defmodule PentoWeb.Router do
   use PentoWeb, :router
 
+  import PentoWeb.UserAuth
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -8,6 +10,7 @@ defmodule PentoWeb.Router do
     plug :put_root_layout, {PentoWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :fetch_current_user
   end
 
   pipeline :api do
@@ -52,5 +55,42 @@ defmodule PentoWeb.Router do
 
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
+  end
+
+  ## Authentication routes
+
+  scope "/", PentoWeb do
+    pipe_through [:browser, :redirect_if_user_is_authenticated]
+
+    get "/signup", UserRegistrationController, :new
+    post "/signup", UserRegistrationController, :create
+    get "/login", UserSessionController, :new
+    post "/login", UserSessionController, :create
+    get "/reset-password", UserResetPasswordController, :new
+    post "/reset-password", UserResetPasswordController, :create
+    get "/reset-password/:token", UserResetPasswordController, :edit
+    put "/reset-password/:token", UserResetPasswordController, :update
+  end
+
+  scope "/", PentoWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    live_session :default, on_mount: PentoWeb.UserAuthLive do
+      live "/guess", WrongLive
+    end
+
+    get "/users/settings", UserSettingsController, :edit
+    put "/users/settings", UserSettingsController, :update
+    get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
+  end
+
+  scope "/", PentoWeb do
+    pipe_through [:browser]
+
+    delete "/logout", UserSessionController, :delete
+    get "/users/confirm", UserConfirmationController, :new
+    post "/users/confirm", UserConfirmationController, :create
+    get "/users/confirm/:token", UserConfirmationController, :edit
+    post "/users/confirm/:token", UserConfirmationController, :update
   end
 end

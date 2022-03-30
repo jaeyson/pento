@@ -25,9 +25,15 @@ config :pento, PentoWeb.Endpoint,
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
 config :pento, Pento.Mailer, adapter: Swoosh.Adapters.Local
+# config :pento, Pento.Mailer,
+#   adapter: Swoosh.Adapters.Mailgun,
+#   api_key: System.get_env("MAILGUN_API"),
+#   domain: System.get_env("MAILGUN_DOMAIN"),
+#   base_url: System.get_env("MAILER_BASE_URL")
 
 # Swoosh API client is needed for adapters other than SMTP.
 config :swoosh, :api_client, false
+# config :swoosh, :api_client, Swoosh.ApiClient.Finch
 
 # Configure esbuild (the version is required)
 config :esbuild,

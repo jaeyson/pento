@@ -15,9 +15,10 @@ defmodule Pento.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Pento.PubSub},
       # Start the Endpoint (http/https)
-      PentoWeb.Endpoint
+      PentoWeb.Endpoint,
       # Start a worker by calling: Pento.Worker.start_link(arg)
       # {Pento.Worker, arg}
+      {Finch, name: Swoosh.Finch}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
