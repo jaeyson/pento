@@ -11,7 +11,15 @@ defmodule Pento.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      test_coverage: [tool: ExCoveralls]
+      test_coverage: [
+        tool: ExCoveralls,
+        ignore_modules: [
+          Pento.AccountsFixtures,
+          Pento.DataCase,
+          PentoWeb.ChannelCase,
+          PentoWeb.ConnCase
+        ]
+      ]
     ]
   end
 

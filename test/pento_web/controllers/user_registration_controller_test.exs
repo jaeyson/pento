@@ -20,7 +20,7 @@ defmodule PentoWeb.UserRegistrationControllerTest do
 
   describe "POST /signup" do
     @tag :capture_log
-    test "creates account and logs the user in", %{conn: conn} do
+    test "creates account and shows flash message", %{conn: conn} do
       email = unique_user_email()
 
       conn =
@@ -28,15 +28,11 @@ defmodule PentoWeb.UserRegistrationControllerTest do
           "user" => valid_user_attributes(email: email)
         })
 
-      assert get_session(conn, :user_token)
-      assert redirected_to(conn) == "/guess"
+      flash_message = "Check your email for confirmation link"
+      signup_message = get_flash(conn, :info)
 
-      # Now do a logged in request and assert on the menu
-      conn = get(conn, "/guess")
-      response = html_response(conn, 200)
-      assert response =~ email
-      assert response =~ "Settings</a>"
-      assert response =~ "Log out</a>"
+      assert flash_message === signup_message
+      assert redirected_to(conn) == "/login"
     end
 
     test "render errors for invalid data", %{conn: conn} do

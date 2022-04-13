@@ -35,7 +35,7 @@ defmodule PentoWeb.UserSettingsControllerTest do
       assert redirected_to(new_password_conn) == Routes.user_settings_path(conn, :edit)
       assert get_session(new_password_conn, :user_token) != get_session(conn, :user_token)
       assert get_flash(new_password_conn, :info) =~ "Password updated successfully"
-      assert Accounts.get_user_by_email_and_password(user.email, "New_val!d_passw0rd")
+      assert Accounts.get_user_by_email_or_username_and_password(user.email, "New_val!d_passw0rd")
     end
 
     test "does not update password on invalid data", %{conn: conn} do

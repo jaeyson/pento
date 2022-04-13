@@ -9,10 +9,14 @@ defmodule PentoWeb.UserSessionController do
   end
 
   def create(conn, %{"user" => user_params}) do
-    %{"email" => email, "password" => password} = user_params
+    %{"email_or_username" => email_or_username, "password" => password} = user_params
 
-    if user = Accounts.get_user_by_email_and_password(email, password) do
-      UserAuth.log_in_user(conn, user, user_params)
+    if user = Accounts.get_user_by_email_or_username_and_password(email_or_username, password) do
+      if user.confirmed_at do
+        UserAuth.log_in_user(conn, user, user_params)
+      else
+        render(conn, "new.html", error_message: "Please check your email for confirmation link")
+      end
     else
       # In order to prevent user enumeration attacks, don't disclose whether the email is registered.
       render(conn, "new.html", error_message: "Invalid email or password")

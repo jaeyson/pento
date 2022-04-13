@@ -27,20 +27,26 @@ defmodule Pento.Accounts do
   end
 
   @doc """
-  Gets a user by email and password.
+  Gets a user by email or username and password.
 
   ## Examples
 
-      iex> get_user_by_email_and_password("foo@example.com", "correct_password")
+      iex> get_user_by_email_or_username_and_password("foo@example.com", "correct_password")
       %User{}
 
-      iex> get_user_by_email_and_password("foo@example.com", "invalid_password")
+      iex> get_user_by_email_or_username_and_password("foo@example.com", "correct_password")
+      %User{}
+
+      iex> get_user_by_email_or_username_and_password("foo@example.com", "invalid_password")
       nil
 
   """
-  def get_user_by_email_and_password(email, password)
-      when is_binary(email) and is_binary(password) do
-    user = Repo.get_by(User, email: email)
+  def get_user_by_email_or_username_and_password(email_or_username, password)
+      when is_binary(email_or_username) and is_binary(password) do
+    user =
+      Repo.get_by(User, email: email_or_username) ||
+        Repo.get_by(User, username: email_or_username)
+
     if User.valid_password?(user, password), do: user
   end
 
