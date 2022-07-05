@@ -21,9 +21,7 @@
 [actions badge]: https://github.com/jaeyson/pento/actions/workflows/ci.yml/badge.svg
 [coverage badge]: https://coveralls.io/repos/github/jaeyson/pento/badge.svg?branch=part-01-chapt-02
 
-## B6 Part I.2 Phoenix and Authentication
+## B7 Part I.3 Generators: Contexts and Schemas
 
-- [x] ~use email service (Mailgun).~
-- [x] ~add `username` field.~
-- [x] ~logged in user visiting `/` will be redirected to `/guess` route.~
-- [x] ~use `assign_new/3` with key `:current_user`.~
+- [x] ~Add changeset to `Product` schema for `unit_price` price decrease.~
+- [x] ~Create `markdown_product/2`~

@@ -6,7 +6,7 @@ defmodule PentoWeb.UserAuthLive do
   Module for LiveView session
   """
 
-  def on_mount(_, _params, %{"user_token" => user_token} = _session, socket) do
+  def on_mount(:user, _params, %{"user_token" => user_token} = _session, socket) do
     socket =
       socket
       |> assign_new(:current_user, fn -> Accounts.get_user_by_session_token(user_token) end)

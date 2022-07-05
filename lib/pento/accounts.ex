@@ -66,6 +66,32 @@ defmodule Pento.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  @doc """
+  Gets a list of roles. Added for dropdown list.
+
+  ## Examples
+
+      iex> get_roles()
+      [:normal, :contributor, :admin]
+
+  """
+  def get_roles do
+    Ecto.Enum.values(Pento.Accounts.User, :role)
+  end
+
+  @doc """
+  Gets a list of user status. Added for dropdown list.
+
+  ## Examples
+
+      iex> get_user_status()
+      [:pending, :active]
+
+  """
+  def get_user_status do
+    Ecto.Enum.values(Pento.Accounts.User, :status)
+  end
+
   ## User registration
 
   @doc """

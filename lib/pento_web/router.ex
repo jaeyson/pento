@@ -20,7 +20,11 @@ defmodule PentoWeb.Router do
   scope "/", PentoWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    get "/", HomeController, :index
+
+    # test email render
+    get "/send-confirmation", EmailController, :send_confirmation
+    get "/send-reset-password", EmailController, :send_reset_password
   end
 
   # Other scopes may use custom stacks.
@@ -75,8 +79,15 @@ defmodule PentoWeb.Router do
   scope "/", PentoWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    live_session :default, on_mount: PentoWeb.UserAuthLive do
+    live_session :default, on_mount: {PentoWeb.UserAuthLive, :user} do
       live "/guess", WrongLive
+
+      live "/products", ProductLive.Index, :index
+      live "/products/new", ProductLive.Index, :new
+      live "/products/:id/edit", ProductLive.Index, :edit
+
+      live "/products/:id", ProductLive.Show, :show
+      live "/products/:id/show/edit", ProductLive.Show, :edit
     end
 
     get "/users/settings", UserSettingsController, :edit

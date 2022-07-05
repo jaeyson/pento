@@ -7,7 +7,8 @@ defmodule PentoWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_pento_key",
-    signing_salt: "tJhG9o28"
+    signing_salt: "tJhG9o28",
+    encryption_salt: "tJhG9o28tJhG9o28"
   ]
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]

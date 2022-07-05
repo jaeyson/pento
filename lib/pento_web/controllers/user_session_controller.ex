@@ -15,7 +15,10 @@ defmodule PentoWeb.UserSessionController do
       if user.confirmed_at do
         UserAuth.log_in_user(conn, user, user_params)
       else
-        render(conn, "new.html", error_message: "Please check your email for confirmation link")
+        conn
+        |> put_flash(:info, "Please check your email for confirmation link")
+        |> redirect(to: "/login")
+        |> halt()
       end
     else
       # In order to prevent user enumeration attacks, don't disclose whether the email is registered.

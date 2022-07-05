@@ -12,6 +12,10 @@ if System.get_env("PHX_SERVER") && System.get_env("RELEASE_NAME") do
   config :pento, PentoWeb.Endpoint, server: true
 end
 
+config :pento, :config,
+  app_name: "Pento",
+  noreply_email: "noreply@nappy.co"
+
 if config_env() == :prod do
   database_url =
     System.get_env("DATABASE_URL") ||
